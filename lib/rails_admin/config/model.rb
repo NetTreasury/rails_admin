@@ -21,12 +21,13 @@ module RailsAdmin
 
       attr_reader :abstract_model
       attr_accessor :groups
-      attr_reader :parent, :root
+      attr_reader :parent, :root, :section
+
 
       def initialize(entity)
         @parent = nil
         @root = self
-
+        @section =nil
         @abstract_model = begin
           if entity.kind_of?(RailsAdmin::AbstractModel)
             entity
@@ -72,6 +73,9 @@ module RailsAdmin
         @parent_model ||= begin
           (klass = abstract_model.model.superclass).to_s.in?(['Object', 'BasicObject', 'ActiveRecord::Base']) ? nil : klass
         end
+      end
+      register_instance_option :section do
+        @section 
       end
 
       register_instance_option :navigation_label do
