@@ -57,12 +57,12 @@ module RailsAdmin
     end
 
     def navigation nodes_stack, nodes, level
-      nodes = nodes.sort{|a,b| a.section <=> b.section}
-      section_name = nil
+      #nodes = nodes.sort{|a,b| a.section <=> b.section}
+      section_name = ''
       nodes.map do |node|
         if (section_name != node.section)
-        %{<li>#{section_name}</li>}.html_safe
-
+          section_name = node.section || ''
+          %{<li>#{section_name}</li>}.html_safe
         end
         %{
           <li#{' class="active"' if node == @model_config }>
@@ -73,7 +73,6 @@ module RailsAdmin
           #{navigation(nodes_stack, nodes_stack.select{ |n| n.parent.to_s == node.abstract_model.model_name}, level + 1)}
 
         }.html_safe
-        section_name = node.section
 
       end.join
     end
